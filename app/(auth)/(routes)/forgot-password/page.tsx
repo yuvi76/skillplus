@@ -22,10 +22,9 @@ import { Loader2 } from "lucide-react";
 
 interface FormData {
   email: string;
-  password: string;
 }
 
-const SignInPage = () => {
+const ForgotPasswordPage = () => {
   const router = useRouter();
   const [showLoader, setShowLoader] = React.useState(false);
   const { toast } = useToast();
@@ -35,15 +34,14 @@ const SignInPage = () => {
     setShowLoader(true);
 
     try {
-      const response = await axios.post(apiUrl + "auth/login", {
+      const response = await axios.post(apiUrl + "auth/forgot-password", {
         email: data.email,
-        password: data.password,
       });
       if (response.data.statusCode === 200) {
         toast({ description: response.data.message });
         setShowLoader(false);
 
-        router.push("/dashboard");
+        router.push("/sign-in");
       }
     } catch (error: any) {
       console.log(error);
@@ -58,14 +56,12 @@ const SignInPage = () => {
 
   const schema = z.object({
     email: z.string().email(),
-    password: z.string().min(6),
   });
 
   const form = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
       email: "",
-      password: "",
     },
   });
 
@@ -76,7 +72,7 @@ const SignInPage = () => {
       <Card className="w-[350px]">
         <CardHeader>
           <CardTitle className="grid w-full text-center gap-4">
-            Sign In
+            Forgot Password
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -96,26 +92,8 @@ const SignInPage = () => {
                     )}
                   />
                 </div>
-                <div className="flex flex-col space-y-1.5">
-                  <FormField
-                    name="password"
-                    control={form.control}
-                    render={({ field }) => (
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        required
-                        {...field}
-                      />
-                    )}
-                  />
-                </div>
                 <Button disabled={showLoader} type="submit">
-                  {showLoader ? (
-                    <Loader2 className="animate-spin" />
-                  ) : (
-                    "Sign in"
-                  )}
+                  {showLoader ? <Loader2 className="animate-spin" /> : "Send"}
                 </Button>
               </div>
             </form>
@@ -123,14 +101,8 @@ const SignInPage = () => {
         </CardContent>
         <CardFooter>
           <CardDescription>
-            Don&apos;t have an account?{" "}
-            <a href="/sign-up" className="text-blue-500">
-              Sign up
-            </a>
-            <br />
-            <br />
-            <a href="/forgot-password" className="text-blue-500">
-              Forgotten password?
+            <a href="/sign-in" className="text-blue-500">
+              Back to Sign In
             </a>
           </CardDescription>
         </CardFooter>
@@ -139,4 +111,4 @@ const SignInPage = () => {
   );
 };
 
-export default SignInPage;
+export default ForgotPasswordPage;

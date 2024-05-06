@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import axios from "axios";
 import {
   Card,
@@ -25,15 +25,10 @@ interface FormData {
   password: string;
 }
 
-const AuthPage = () => {
+const SignInPage = () => {
   const router = useRouter();
   const [showLoader, setShowLoader] = React.useState(false);
   const { toast } = useToast();
-
-  useEffect(() => {
-    // Example of using useRouter in an effect
-    console.log(router.pathname);
-  }, [router]);
 
   const handleSubmit = async (data: FormData) => {
     const apiUrl = process.env.NEXT_PUBLIC_BACKEND_URL;
@@ -115,7 +110,7 @@ const AuthPage = () => {
                     )}
                   />
                 </div>
-                <Button type="submit">
+                <Button disabled={showLoader} type="submit">
                   {showLoader ? (
                     <Loader2 className="animate-spin" />
                   ) : (
@@ -132,6 +127,11 @@ const AuthPage = () => {
             <a href="/sign-up" className="text-blue-500">
               Sign up
             </a>
+            <br />
+            <br />
+            <a href="/forgot-password" className="text-blue-500">
+              Forgot password?
+            </a>
           </CardDescription>
         </CardFooter>
       </Card>
@@ -139,4 +139,4 @@ const AuthPage = () => {
   );
 };
 
-export default AuthPage;
+export default SignInPage;

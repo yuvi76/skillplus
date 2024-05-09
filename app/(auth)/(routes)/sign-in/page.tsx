@@ -14,7 +14,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormField } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -36,7 +42,7 @@ const SignInPage = () => {
 
     try {
       const response = await axios.post(apiUrl + "auth/login", {
-        email: data.email,
+        email: data.email.toLowerCase(),
         password: data.password,
       });
       if (response.data.statusCode === 200) {
@@ -57,8 +63,10 @@ const SignInPage = () => {
   };
 
   const schema = z.object({
-    email: z.string().email(),
-    password: z.string().min(6),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" }),
   });
 
   const form = useForm<FormData>({
@@ -88,11 +96,16 @@ const SignInPage = () => {
                     name="email"
                     control={form.control}
                     render={({ field }) => (
-                      <Input
-                        placeholder="Enter your email"
-                        required
-                        {...field}
-                      />
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your email"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
                 </div>
@@ -101,12 +114,17 @@ const SignInPage = () => {
                     name="password"
                     control={form.control}
                     render={({ field }) => (
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        required
-                        {...field}
-                      />
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="Enter your password"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
                 </div>

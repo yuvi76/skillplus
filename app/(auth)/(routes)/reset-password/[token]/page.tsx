@@ -71,17 +71,9 @@ const ResetPasswordPage = () => {
         })
         .refine(
           (password) => {
-            const lowercaseRegex = /[a-z]/;
-            const uppercaseRegex = /[A-Z]/;
-            const numberRegex = /[0-9]/;
-            const symbolRegex = /[^A-Za-z0-9]/;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
 
-            return (
-              lowercaseRegex.test(password) &&
-              uppercaseRegex.test(password) &&
-              numberRegex.test(password) &&
-              symbolRegex.test(password)
-            );
+            return passwordRegex.test(password);
           },
           {
             message:

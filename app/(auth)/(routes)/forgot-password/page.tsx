@@ -55,7 +55,7 @@ const ForgotPasswordPage = () => {
   };
 
   const schema = z.object({
-    email: z.string().email(),
+    email: z.string().email({ message: "Invalid email address" }),
   });
 
   const form = useForm<FormData>({

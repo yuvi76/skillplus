@@ -14,7 +14,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormField } from "@/components/ui/form";
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormMessage,
+  FormControl,
+} from "@/components/ui/form";
 import { useToast } from "@/components/ui/use-toast";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -37,8 +43,8 @@ const SignUpPage = () => {
 
     try {
       const response = await axios.post(apiUrl + "auth/signup", {
-        username: data.username,
-        email: data.email,
+        username: data.username.toLowerCase(),
+        email: data.email.toLowerCase(),
         password: data.password,
       });
       if (response.data.statusCode === 201) {
@@ -58,9 +64,37 @@ const SignUpPage = () => {
   };
 
   const schema = z.object({
-    username: z.string().min(3).max(20),
-    email: z.string().email(),
-    password: z.string().min(6),
+    username: z
+      .string()
+      .min(3, { message: "Username must be at least 3 characters" })
+      .max(20, { message: "Username must be at most 20 characters" })
+      .refine(
+        (username) => {
+          const usernameRegex = /^[a-zA-Z0-9_]*$/;
+
+          return usernameRegex.test(username);
+        },
+        {
+          message:
+            "Username must contain only letters, numbers, and underscores",
+        }
+      ),
+    email: z.string().email({ message: "Invalid email address" }),
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .refine(
+        (password) => {
+          const passwordRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9]).{8,}$/;
+
+          return passwordRegex.test(password);
+        },
+        {
+          message:
+            "Password must contain at least one lowercase letter, one uppercase letter, one number, and one symbol",
+        }
+      ),
   });
 
   const form = useForm<FormData>({
@@ -89,11 +123,16 @@ const SignUpPage = () => {
                     name="username"
                     control={form.control}
                     render={({ field }) => (
-                      <Input
-                        placeholder="Enter your username"
-                        required
-                        {...field}
-                      />
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your username"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
                 </div>
@@ -102,11 +141,16 @@ const SignUpPage = () => {
                     name="email"
                     control={form.control}
                     render={({ field }) => (
-                      <Input
-                        placeholder="Enter your email"
-                        required
-                        {...field}
-                      />
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter your email"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
                 </div>
@@ -115,12 +159,17 @@ const SignUpPage = () => {
                     name="password"
                     control={form.control}
                     render={({ field }) => (
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        required
-                        {...field}
-                      />
+                      <FormItem>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="Enter your password"
+                            required
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
                     )}
                   />
                 </div>

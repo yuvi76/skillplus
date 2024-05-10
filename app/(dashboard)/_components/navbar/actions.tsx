@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { LogIn } from "lucide-react";
 
 export const Actions = async () => {
   const [user, setUser] = useState("");
@@ -15,6 +16,7 @@ export const Actions = async () => {
     <div className="flex items-center justify-end gap-x-2 ml-4 lg:ml-0">
       {!user ? (
         <Button size="sm" onClick={() => router.push("/sign-in")}>
+          <LogIn className="h-5 w-5 lg:mr-2" />
           Login
         </Button>
       ) : (

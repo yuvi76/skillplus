@@ -1,6 +1,7 @@
 import { Suspense } from "react";
 import { Navbar } from "./_components/navbar";
 // import { Sidebar, SidebarSkeleton } from "./_components/sidebar";
+import { Sidebar } from "./_components/sidebar";
 
 const BrowseLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -8,7 +9,7 @@ const BrowseLayout = ({ children }: { children: React.ReactNode }) => {
       <Navbar />
       <div className="h-full">
         {/* <Suspense fallback={<SidebarSkeleton />}> */}
-          {/* <Sidebar /> */}
+        <Sidebar />
         {/* </Suspense> */}
       </div>
     </>

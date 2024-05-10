@@ -4,7 +4,8 @@ const BrowseLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Navbar />
-      <div className="flex h-fll pt-20">{children}</div>
+      <div className="flex h-fll pt-20">
+        {children}</div>
     </>
   );
 };

@@ -20,7 +20,7 @@ export const Actions = async () => {
   return (
     <div className="flex items-center justify-end gap-x-2 ml-4 lg:ml-0">
       {isInstructorPage || isPlayerPage ? (
-        <Button size="sm" variant="ghost">
+        <Button size="sm" variant="ghost" onClick={() => router.push("/")}>
           <LogOut className="h-5 w-5 mr-2" />
           Exit
         </Button>

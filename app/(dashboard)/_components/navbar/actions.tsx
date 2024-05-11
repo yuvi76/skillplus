@@ -1,11 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { LogIn } from "lucide-react";
+import { LogIn, LogOut } from "lucide-react";
+import Link from "next/link";
 
 export const Actions = async () => {
   const [user, setUser] = useState("");
+  const pathname = usePathname();
   const router = useRouter();
+
+  const isInstructorPage = pathname?.startsWith("/instructor");
+  const isPlayerPage = pathname?.includes("/lesson");
 
   useEffect(() => {
     const user = localStorage.getItem("user");
@@ -14,6 +19,18 @@ export const Actions = async () => {
 
   return (
     <div className="flex items-center justify-end gap-x-2 ml-4 lg:ml-0">
+      {isInstructorPage || isPlayerPage ? (
+        <Button size="sm" variant="ghost">
+          <LogOut className="h-5 w-5 mr-2" />
+          Exit
+        </Button>
+      ) : (
+        <Link href="/instructor/course">
+          <Button size="sm" variant="ghost">
+            Instructor Mode
+          </Button>
+        </Link>
+      )}
       {!user ? (
         <Button size="sm" onClick={() => router.push("/sign-in")}>
           <LogIn className="h-5 w-5 lg:mr-2" />
@@ -22,22 +39,6 @@ export const Actions = async () => {
       ) : (
         <Button size="sm">Logout</Button>
       )}
-      {/* {!!user && (
-        <div className="flex items-center gap-x-4">
-          <Button
-            size="sm"
-            variant="ghost"
-            className="text-muted-foreground hover:text-primary"
-            asChild
-          >
-            <Link href={`/u/${user.username}`}>
-              <Clapperboard className="h-5 w-5 lg:mr-2" />
-              <span className="hidden lg:block">Dashboard</span>
-            </Link>
-          </Button>
-          <UserButton afterSignOutUrl="/" />
-        </div>
-      )} */}
     </div>
   );
 };

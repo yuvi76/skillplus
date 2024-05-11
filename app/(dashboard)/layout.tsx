@@ -6,11 +6,12 @@ import { Sidebar } from "./_components/sidebar";
 const BrowseLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
-      <Navbar />
       <div className="h-full">
+        <Navbar />
         {/* <Suspense fallback={<SidebarSkeleton />}> */}
         <Sidebar />
         {/* </Suspense> */}
+        <main className="md:pl-64 md:pt-10 h-full">{children}</main>
       </div>
     </>
   );

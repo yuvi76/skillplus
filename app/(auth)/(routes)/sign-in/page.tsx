@@ -48,8 +48,9 @@ const SignInPage = () => {
       if (response.data.statusCode === 200) {
         toast({ description: response.data.message });
         setShowLoader(false);
-
-        router.push("/dashboard");
+        localStorage.setItem("token", response.data.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.data.user));
+        router.push("/");
       }
     } catch (error: any) {
       console.log(error);

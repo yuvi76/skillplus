@@ -1,5 +1,5 @@
 "use client";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Image from "next/image";
@@ -23,6 +23,7 @@ interface CourseDetails {
 }
 
 const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
+  const router = useRouter();
   const [course, setCourse] = useState<CourseDetails | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
@@ -134,7 +135,19 @@ const CourseIdPage = ({ params }: { params: { courseId: string } }) => {
         </div>
 
         <div className="mt-4">
-          <Button>Edit Course</Button>
+          <Button
+            onClick={() =>
+              router.push(`/instructor/course/${params.courseId}/edit`)
+            }
+          >
+            Edit Course
+          </Button>
+          <Button
+            className="ml-2"
+            onClick={() => router.push(`/instructor/course`)}
+          >
+            Back
+          </Button>
         </div>
       </div>
     </div>
